@@ -9,6 +9,7 @@ const Page = models.Page;
 const User = models.User;
 
 const app = express();
+const wikiRouter = require('./routes/wiki');
 
 // app.engine('html', swig.renderFile);
 // swig.setDefaults({ cache: false });
@@ -27,6 +28,8 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
 
+
+app.use('/wiki', wikiRouter);
 
 app.get('/', function(req, res){
     res.render('index');
