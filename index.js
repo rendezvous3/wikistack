@@ -1,9 +1,19 @@
-var express = require('express');
-var swig = require('swig');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
+const express = require('express');
+const swig = require('swig');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const nunjucks = require('nunjucks');
 
-var app = express();
+const app = express();
+
+// app.engine('html', swig.renderFile);
+// swig.setDefaults({ cache: false });
+
+app.engine('html', nunjucks.render);
+nunjucks.configure('views', {noCache: true});
+app.set('view engine', 'html');
+//app.set('views', __dirname + '/views');
+
 
 app.use(morgan('dev'));
 
@@ -15,7 +25,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req, res){
-    res.send('Rendering!');
+    res.render('index');
 });
 
 app.listen(3000, function(){
