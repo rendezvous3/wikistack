@@ -4,6 +4,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 
+const models = require('./models');
+const Page = models.Page;
+const User = models.User;
+
 const app = express();
 
 // app.engine('html', swig.renderFile);
@@ -28,6 +32,13 @@ app.get('/', function(req, res){
     res.render('index');
 });
 
-app.listen(3000, function(){
-    console.log("Server is listening on port 3000!");
-})
+User.sync()
+    .then(function(){
+        return Page.sync();
+    })
+    .then(function(){
+        app.listen(3000, function(){
+            console.log("Server is listening on port 3000!");
+        })
+    });
+
