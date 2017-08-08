@@ -21,6 +21,8 @@ const Page = db.define('page', {
         },
     },
     getterMethods: {
+        // Note that this getter method is invoked without () {{ page.route }}
+        // Because of Object.defineProperty etc...
         route: function() {
             return '/wiki/' + this.urlTitle;
         }

@@ -13,13 +13,15 @@ router.get('/', function(req, res){
 router.post('/', function(req, res, next){
     let newPage = Page.build(req.body);
     newPage.save()
-        .then(function(){
+        .then(function(savedPage){
             console.log('Page was saved successfully!');
-            res.redirect('/wiki');
+            // weird JS magic getter method is invoked without ()
+            res.redirect(savedPage.route);
         })
-        .catch(function(err){
-            next(err);
-        })
+        .catch(next);
+        // .catch(function(err){
+        //     next(err);
+        // })
 
 });
 
