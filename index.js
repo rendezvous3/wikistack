@@ -40,7 +40,9 @@ app.use(function(err, req, res, next){
     res.status(500).send(err.message);
 });
 
-User.sync()
+
+// { force: true }
+User.sync({ force: true })
     .then(function(){
         return Page.sync();
     })
