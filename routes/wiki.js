@@ -41,11 +41,15 @@ router.get('/:urlTitle', function(req, res, next){
         }
     })
         .then(function(page){
-            console.log(page);
+            //console.log(page);
+            if(page === null) {
+                return next(new Error('That page was not found!'));
+            }
+
+            res.render('wikipage', {
+                page: page,
+            }); 
         })
         .catch(next);
-        // .catch(function(err){
-        //     next(err);
-        // });
 })
 

@@ -19,6 +19,11 @@ const Page = db.define('page', {
             }
             console.log(page);
         },
+    },
+    getterMethods: {
+        route: function() {
+            return '/wiki/' + this.urlTitle;
+        }
     }
 });
 
