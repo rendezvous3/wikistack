@@ -7,21 +7,15 @@ const User = models.User;
 module.exports = router;
 
 router.get('/', function(req, res){
-
+    res.render('index');
 });
 
 router.post('/', function(req, res, next){
-    //console.log(req.body);
-    // let newPage = Page.build({
-    //     title: req.body.title,
-    //     content: req.body.content,
-    //     status: req.body.status
-    // })
     let newPage = Page.build(req.body);
-    
     newPage.save()
         .then(function(){
             console.log('Page was saved successfully!');
+            res.redirect('/wiki');
         })
         .catch(function(err){
             next(err);

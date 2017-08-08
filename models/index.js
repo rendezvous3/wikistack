@@ -14,6 +14,9 @@ const Page = db.define('page', {
 }, {
     hooks: {
         beforeValidate: function(page) {
+            if(page.title){
+                page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
+            }
             console.log(page);
         },
     }
