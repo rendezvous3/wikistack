@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/wikistack');
 
+
+// db.define takes in 3 parameters, name, definitions, options
 const Page = db.define('page', {
     title: { type: Sequelize.STRING(333),
              allowNull: false },
@@ -9,7 +11,13 @@ const Page = db.define('page', {
     content: {  type: Sequelize.TEXT, 
                 allowNull: false },
     status: { type: Sequelize.ENUM('open', 'closed') }
-})
+}, {
+    hooks: {
+        beforeValidate: function(page) {
+            console.log(page);
+        },
+    }
+});
 
 const User = db.define('user', {
     name: { type: Sequelize.STRING(333),
