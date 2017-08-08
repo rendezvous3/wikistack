@@ -35,6 +35,11 @@ app.get('/', function(req, res){
     res.render('index');
 });
 
+app.use(function(err, req, res, next){
+    console.log(err);
+    res.status(500).send(err.message);
+});
+
 User.sync()
     .then(function(){
         return Page.sync();

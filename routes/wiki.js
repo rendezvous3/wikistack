@@ -10,7 +10,7 @@ router.get('/', function(req, res){
 
 });
 
-router.post('/', function(req, res){
+router.post('/', function(req, res, next){
     //console.log(req.body);
     // let newPage = Page.build({
     //     title: req.body.title,
@@ -18,7 +18,14 @@ router.post('/', function(req, res){
     //     status: req.body.status
     // })
     let newPage = Page.build(req.body);
-    console.log(newPage);
+    
+    newPage.save()
+        .then(function(){
+            console.log('Page was saved successfully!');
+        })
+        .catch(function(err){
+            next(err);
+        })
 
 });
 
