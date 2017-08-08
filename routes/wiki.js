@@ -15,14 +15,15 @@ router.get('/', function(req, res, next){
 });
 
 router.post('/', function(req, res, next){
-    let newPage = Page.build(req.body);
-    newPage.save()
-        .then(function(savedPage){
-            console.log('Page was saved successfully!');
-            // weird JS magic getter method is invoked without ()
-            res.redirect(savedPage.route);
-        })
-        .catch(next);
+    console.log(req.body);
+    // let newPage = Page.build(req.body);
+    // newPage.save()
+    //     .then(function(savedPage){
+    //         console.log('Page was saved successfully!');
+    //         // weird JS magic getter method is invoked without ()
+    //         res.redirect(savedPage.route);
+    //     })
+    //     .catch(next);
 
 });
 

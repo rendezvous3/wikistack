@@ -42,7 +42,7 @@ app.use(function(err, req, res, next){
 
 
 // { force: true }
-User.sync({ force: true })
+User.sync()
     .then(function(){
         return Page.sync();
     })
