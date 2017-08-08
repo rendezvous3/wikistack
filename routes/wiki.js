@@ -6,8 +6,12 @@ const User = models.User;
 
 module.exports = router;
 
-router.get('/', function(req, res){
-    res.render('index');
+router.get('/', function(req, res, next){
+    Page.findAll({})
+        .then(function(pages){
+            res.render('index', { pages: pages });
+        })
+        .catch(next);
 });
 
 router.post('/', function(req, res, next){
@@ -19,9 +23,6 @@ router.post('/', function(req, res, next){
             res.redirect(savedPage.route);
         })
         .catch(next);
-        // .catch(function(err){
-        //     next(err);
-        // })
 
 });
 
