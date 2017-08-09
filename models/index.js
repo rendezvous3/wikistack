@@ -13,6 +13,17 @@ const Page = db.define('page', {
     status: { type: Sequelize.ENUM('open', 'closed') },
     tags: {
         type: Sequelize.ARRAY(Sequelize.TEXT),
+        set: function(value) {
+            let arrayOfTags;
+            if (typeof value === 'string') {
+                arrayOfTags = value.split(',').map(function(x){
+                    return x.trim();
+                });
+                this.setDataValue('tags', arrayOfTags);
+            } else {
+                this.setDataValue('tags', value);
+            }
+        }
     }
 }, {
     hooks: {
@@ -29,8 +40,32 @@ const Page = db.define('page', {
         route: function() {
             return '/wiki/' + this.urlTitle;
         }
-    }
+    },
+    // classMethods: {
+
+    //     findByTag: function(tag) {
+    //         return Page.findAll({
+    //             where: {
+    //                 tags: {
+    //                     $overlap: [tag]
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    // }
 });
+
+
+Page.findByTag = function(tag) {
+  return this.findAll({
+    where: {
+      tags: {
+        $contains: [tag]
+      }
+    }
+  });
+};
 
 const User = db.define('user', {
     name: { type: Sequelize.STRING(333),

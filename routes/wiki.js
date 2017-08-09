@@ -22,15 +22,11 @@ router.post('/', function(req, res, next){
         }
     }).spread(function(user, isCompleted){
 
-        let splitTags = req.body.tags.split(',').map(function(str){
-            return str.trim();
-        });
-
         return Page.create({
             title: req.body.title,
             content: req.body.content,
             status: req.body.status,
-            tags: splitTags
+            tags: req.body.tags
         })
         .then(function(createdPage){
             return createdPage.setAuthor(user);
@@ -46,6 +42,16 @@ router.get('/add', function(req, res){
     res.render('addpage');
 });
 
+
+router.get('/search/:tag', function(req, res, next){
+    Page.findByTag(req.params.tag)
+    .then(function(pages){
+        res.render('index', {
+            pages: pages,
+        })
+    })
+    .catch(next);
+});
 
 // Note that ordering of routes is really important, if this one was above add, it
 // would be problematic
