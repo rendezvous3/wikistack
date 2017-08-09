@@ -53,16 +53,24 @@ router.get('/:urlTitle', function(req, res, next){
             urlTitle: urlTitleOfAPage,
         }
     })
-        .then(function(page){
-            //console.log(page);
-            if(page === null) {
-                return next(new Error('That page was not found!'));
-            }
+    .then(function(page){
+        //console.log(page);
+        if(page === null) {
+            return next(new Error('That page was not found!'));
+        }
 
+        // Page.belongsTo(User, { as: 'author' });
+        page.getAuthor()
+        .then(function(author){
+            page.author = author;
             res.render('wikipage', {
                 page: page,
-            }); 
-        })
-        .catch(next);
+                //author: author
+            });
+        });
+
+ 
+    })
+    .catch(next);
 })
 
