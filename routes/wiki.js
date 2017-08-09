@@ -86,3 +86,30 @@ router.get('/:urlTitle', function(req, res, next){
     .catch(next);
 })
 
+router.get('/:urlTitle/similar', function(req, res, next){
+    Page.findOne({
+        where: {
+            urlTitle: req.params.urlTitle
+        }
+    })
+    .then(function(page){
+        if(page === null) {
+            return next(new Error('That Page was not found!'));
+        }
+        //var pages = page.findSimilar();
+        //return [pages, page];
+        // res.render('index', { pages: pages,
+        //                       title: 'Similar pages',
+        //                       pageN: page });
+        //res.render('index', {pages:pages});  
+        return page.findSimilar();                      
+    })
+    .then(function(similarPages){
+        res.render('index', {pages: similarPages})
+    })
+    // .then(function(pages){
+    //     res.render('index', { pages: pages[0], title: 'Similar pages', pageN: pages[1] });
+    // })
+    .catch(next);
+});
+

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/wikistack');
+const marked = require('marked');
 
 
 // db.define takes in 3 parameters, name, definitions, options
@@ -9,7 +10,8 @@ const Page = db.define('page', {
     urlTitle: { type: Sequelize.STRING(333),
                 allowNull: false },
     content: {  type: Sequelize.TEXT, 
-                allowNull: false },
+                allowNull: false,
+                get: marked(this.content) },
     status: { type: Sequelize.ENUM('open', 'closed') },
     tags: {
         type: Sequelize.ARRAY(Sequelize.TEXT),
@@ -77,6 +79,19 @@ const User = db.define('user', {
                 isEmail: true
              }}
 });
+
+Page.prototype.findSimilar = function() {
+    return Page.findAll({
+        where: {
+            tags: {
+                $overlap: this.tags,
+            },
+            id: {
+                $ne: this.id
+            }
+        }
+    });
+}
 
 
 // this relationship gives us methods setAuthor() and getAuthor
