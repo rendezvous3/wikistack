@@ -10,6 +10,7 @@ const User = models.User;
 
 const app = express();
 const wikiRouter = require('./routes/wiki');
+const usersRouter = require('./routes/users');
 
 // app.engine('html', swig.renderFile);
 // swig.setDefaults({ cache: false });
@@ -30,6 +31,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.use('/wiki', wikiRouter);
+app.use('/users', usersRouter);
 
 app.get('/', function(req, res){
     res.render('index');
