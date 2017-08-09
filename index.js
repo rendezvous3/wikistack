@@ -42,9 +42,9 @@ app.use(function(err, req, res, next){
 
 
 // { force: true }
-User.sync()
+User.sync({ force: true })
     .then(function(){
-        return Page.sync();
+        return Page.sync({ force: true });
     })
     .then(function(){
         app.listen(3000, function(){

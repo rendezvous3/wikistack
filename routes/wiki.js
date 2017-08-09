@@ -15,16 +15,25 @@ router.get('/', function(req, res, next){
 });
 
 router.post('/', function(req, res, next){
-    console.log(req.body);
-    // let newPage = Page.build(req.body);
-    // newPage.save()
-    //     .then(function(savedPage){
-    //         console.log('Page was saved successfully!');
-    //         // weird JS magic getter method is invoked without ()
-    //         res.redirect(savedPage.route);
-    //     })
-    //     .catch(next);
-
+    User.findOrCreate({
+        where: {
+            email: req.body.authorEmail,
+            name: req.body.authorName, 
+        }
+    }).spread(function(user, isCompleted){
+        return Page.create({
+            title: req.body.title,
+            content: req.body.content,
+            status: req.body.status
+        })
+        .then(function(createdPage){
+            return createdPage.setAuthor(user);
+        })
+        .then(function(createdPage){
+            res.redirect(createdPage.route);
+        })
+        .catch(next);
+    })
 });
 
 router.get('/add', function(req, res){

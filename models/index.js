@@ -40,6 +40,8 @@ const User = db.define('user', {
              }}
 });
 
+
+// this relationship gives us methods setAuthor() and getAuthor
 Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
