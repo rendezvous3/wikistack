@@ -21,10 +21,16 @@ router.post('/', function(req, res, next){
             name: req.body.authorName, 
         }
     }).spread(function(user, isCompleted){
+
+        let splitTags = req.body.tags.split(',').map(function(str){
+            return str.trim();
+        });
+
         return Page.create({
             title: req.body.title,
             content: req.body.content,
-            status: req.body.status
+            status: req.body.status,
+            tags: splitTags
         })
         .then(function(createdPage){
             return createdPage.setAuthor(user);

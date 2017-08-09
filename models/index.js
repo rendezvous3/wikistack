@@ -10,7 +10,10 @@ const Page = db.define('page', {
                 allowNull: false },
     content: {  type: Sequelize.TEXT, 
                 allowNull: false },
-    status: { type: Sequelize.ENUM('open', 'closed') }
+    status: { type: Sequelize.ENUM('open', 'closed') },
+    tags: {
+        type: Sequelize.ARRAY(Sequelize.TEXT),
+    }
 }, {
     hooks: {
         beforeValidate: function(page) {
